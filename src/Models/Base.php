@@ -27,7 +27,7 @@ class BaseModel extends Model
             ->create($data)
             ->id;
         if ($result) {
-            flash_message('添加成功');
+            flash_success('添加成功');
             return $result;
         }else{
             return false;
@@ -49,14 +49,14 @@ class BaseModel extends Model
             ->get();
         // 可能有查不到数据的情况
         if ($model->isEmpty()) {
-            flash_message('无需要添加的数据', false);
+            flash_error('无需要添加的数据');
             return false;
         }
         foreach ($model as $k => $v) {
             $result = $v->forceFill($data)->save();
         }
         if ($result) {
-            flash_message('修改成功');
+            flash_success('修改成功');
             return $result;
         }else{
             return false;
@@ -76,7 +76,7 @@ class BaseModel extends Model
             ->where($map)
             ->delete();
         if ($result) {
-            flash_message('操作成功');
+            flash_success('操作成功');
             return $result;
         }else{
             return false;
@@ -97,7 +97,7 @@ class BaseModel extends Model
             ->where($map)
             ->restore();
         if ($result) {
-            flash_message('操作成功');
+            flash_success('操作成功');
             return $result;
         }else{
             return false;
@@ -208,7 +208,7 @@ class BaseModel extends Model
         // 更新
         $result = DB::update(DB::raw($sql));
         if ($result) {
-            flash_message('添加成功');
+            flash_success('添加成功');
         }
         return $result;
     }
