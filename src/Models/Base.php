@@ -5,7 +5,7 @@ namespace Baijunyao\LaravelModel\Models;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
-class Base extends Model
+class BaseModel extends Model
 {
     /**
      * 禁止被批量赋值的字段
