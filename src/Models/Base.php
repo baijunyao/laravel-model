@@ -30,6 +30,7 @@ class BaseModel extends Model
             flash_success('添加成功');
             return $result;
         }else{
+            flash_error('添加失败');
             return false;
         }
     }
@@ -59,6 +60,7 @@ class BaseModel extends Model
             flash_success('修改成功');
             return $result;
         }else{
+            flash_error('修改失败');
             return false;
         }
     }
@@ -76,9 +78,10 @@ class BaseModel extends Model
             ->where($map)
             ->delete();
         if ($result) {
-            flash_success('操作成功');
+            flash_success('删除成功');
             return $result;
         }else{
+            flash_error('删除失败');
             return false;
         }
     }
@@ -97,9 +100,10 @@ class BaseModel extends Model
             ->where($map)
             ->restore();
         if ($result) {
-            flash_success('操作成功');
+            flash_success('恢复成功');
             return $result;
         }else{
+            flash_error('恢复失败');
             return false;
         }
     }
@@ -208,7 +212,9 @@ class BaseModel extends Model
         // 更新
         $result = DB::update(DB::raw($sql));
         if ($result) {
-            flash_success('添加成功');
+            flash_success('操作成功');
+        } else {
+            flash_error('操作失败');
         }
         return $result;
     }
