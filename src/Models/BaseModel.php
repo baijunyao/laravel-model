@@ -128,48 +128,53 @@ class BaseModel extends Model
      * @param $map
      * @return mixed
      */
-    public function scopeWhereMap($query, $map)
+    public function scopeWhereMap($query, array $map)
     {
         // 如果是空直接返回
         if (empty($map)) {
             return $query;
         }
-
+        // 判断关系是 and 还是 or
+        $where = 'where';
+        if (isset($map['_logic'])) {
+            $logic = strtolower($map['_logic']);
+            $where = $logic == 'or' ? 'orWhere' : 'where';
+            unset($map['_logic']);
+        }
         // 判断各种方法
         foreach ($map as $k => $v) {
             if (is_array($v)) {
                 $sign = strtolower($v[0]);
                 switch ($sign) {
                     case 'in':
-                        $query->whereIn($k, $v[1]);
+                        $query->{$where.'In'}($k, $v[1]);
                         break;
                     case 'notin':
-                        $query->whereNotIn($k, $v[1]);
+                        $query->{$where.'NotIn'}($k, $v[1]);
                         break;
                     case 'between':
-                        $query->whereBetween($k, $v[1]);
+                        $query->{$where.'Between'}($k, $v[1]);
                         break;
                     case 'notbetween':
-                        $query->whereNotBetween($k, $v[1]);
+                        $query->{$where.'NotBetween'}($k, $v[1]);
                         break;
                     case 'null':
-                        $query->whereNull($k);
+                        $query->{$where.'Null'}($k);
                         break;
                     case 'notnull':
-                        $query->whereNotNull($k);
+                        $query->{$where.'NotNull'}($k);
                         break;
                     case '=':
                     case '>':
                     case '<':
                     case '<>':
                     case 'like':
-                        $query->where($k, $sign, $v[1]);
+                        $query->{$where}($k, $sign, $v[1]);
                         break;
                 }
             } else {
-                $query->where($k, $v);
+                $query->$where($k, $v);
             }
-
         }
         return $query;
     }
