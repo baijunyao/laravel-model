@@ -22,6 +22,11 @@ class BaseModel extends Model
      */
     public function storeData($data)
     {
+        // 处理data为空的情况
+        if (empty($data)) {
+            flash_error('无需要添加的数据');
+            return false;
+        }
         //添加数据
         $result = $this
             ->create($data)
