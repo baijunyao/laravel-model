@@ -80,7 +80,7 @@ class BaseModel extends Model
     {
         //软删除
         $result=$this
-            ->where($map)
+            ->whereMap($map)
             ->delete();
         if ($result) {
             flash_success('删除成功');
@@ -102,7 +102,7 @@ class BaseModel extends Model
     {
         // 恢复
         $result=$this
-            ->where($map)
+            ->whereMap($map)
             ->restore();
         if ($result) {
             flash_success('恢复成功');
