@@ -28,12 +28,10 @@ class BaseModel extends Model
             return false;
         }
         //添加数据
-        $result = $this
-            ->create($data)
-            ->id;
+        $result = $this->create($data);
         if ($result) {
             flash_success('添加成功');
-            return $result;
+            return $result->id;
         }else{
             flash_error('添加失败');
             return false;
