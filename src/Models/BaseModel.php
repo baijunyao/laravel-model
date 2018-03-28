@@ -76,7 +76,7 @@ class BaseModel extends Model
      */
     public function destroyData($map)
     {
-        //软删除
+        // 软删除
         $result=$this
             ->whereMap($map)
             ->delete();
@@ -111,6 +111,27 @@ class BaseModel extends Model
         }
     }
 
+    /**
+     * 彻底删除
+     *
+     * @param $map
+     *
+     * @return bool
+     */
+    public function forceDeleteData($map)
+    {
+        // 彻底删除
+        $result=$this
+            ->whereMap($map)
+            ->forceDelete();
+        if ($result) {
+            flash_success('彻底删除成功');
+            return $result;
+        }else{
+            flash_error('彻底删除失败');
+            return false;
+        }
+    }
 
     /**
      * 使用作用域扩展 Builder 链式操作
