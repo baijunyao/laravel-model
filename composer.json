@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "baijunyao/laravel-flash": "1.0.*"
+        "baijunyao/laravel-flash": "1.1.*"
     },
     "autoload": {
         "psr-4": {
