@@ -17,23 +17,26 @@ class BaseModel extends Model
     /**
      * 添加数据
      *
-     * @param  array $data 需要添加的数据
-     * @return bool        是否成功
+     * @param      $data   插入的内容
+     * @param bool $flash  是否需要成功或者失败的提示
+     *
+     * @return bool|mixed
      */
-    public function storeData($data)
+    public function storeData($data, $flash = true)
     {
         // 处理data为空的情况
         if (empty($data)) {
-            flash_error('无需要添加的数据');
+            flash_error('无需要添加的数据', $flash);
             return false;
         }
         //添加数据
         $result = $this->create($data);
         if ($result) {
-            flash_success('添加成功');
+
+            flash_success('添加成功', $flash);
             return $result->id;
         }else{
-            flash_error('添加失败');
+            flash_error('添加失败', $flash);
             return false;
         }
     }
@@ -41,11 +44,13 @@ class BaseModel extends Model
     /**
      * 修改数据
      *
-     * @param  array $map  where条件
-     * @param  array $data 需要修改的数据
-     * @return bool        是否成功
+     * @param      $map   修改的where
+     * @param      $data  修改的数据
+     * @param bool $flash 是否需要成功或者失败的提示
+     *
+     * @return bool
      */
-    public function updateData($map, $data)
+    public function updateData($map, $data, $flash = true)
     {
         $model = $this
             ->whereMap($map)
@@ -53,17 +58,17 @@ class BaseModel extends Model
             ->get();
         // 可能有查不到数据的情况
         if ($model->isEmpty()) {
-            flash_error('无需要添加的数据');
+            flash_error('无需要添加的数据', $flash);
             return false;
         }
         foreach ($model as $k => $v) {
             $result = $v->forceFill($data)->save();
         }
         if ($result) {
-            flash_success('修改成功');
+            flash_success('修改成功', $flash);
             return $result;
         }else{
-            flash_error('修改失败');
+            flash_error('修改失败', $flash);
             return false;
         }
     }
@@ -71,20 +76,23 @@ class BaseModel extends Model
     /**
      * 删除数据
      *
-     * @param  array $map   where 条件数组形式
-     * @return bool         是否成功
+     * @param      $map   删除的where
+     * @param      $data  删除的数据
+     * @param bool $flash 是否需要成功或者失败的提示
+     *
+     * @return bool
      */
-    public function destroyData($map)
+    public function destroyData($map, $flash = true)
     {
         // 软删除
         $result=$this
             ->whereMap($map)
             ->delete();
         if ($result) {
-            flash_success('删除成功');
+            flash_success('删除成功', $flash);
             return $result;
         }else{
-            flash_error('删除失败');
+            flash_error('删除失败', $flash);
             return false;
         }
     }
@@ -92,21 +100,22 @@ class BaseModel extends Model
     /**
      * 恢复数据
      *
-     * @param $map
+     * @param      $map   恢复的数据where
+     * @param bool $flash 是否需要成功或者失败的提示
      *
-     * @return bool
+     * @return bool恢复数据
      */
-    public function restoreData($map)
+    public function restoreData($map, $flash = true)
     {
         // 恢复
         $result=$this
             ->whereMap($map)
             ->restore();
         if ($result) {
-            flash_success('恢复成功');
+            flash_success('恢复成功', $flash);
             return $result;
         }else{
-            flash_error('恢复失败');
+            flash_error('恢复失败', $flash);
             return false;
         }
     }
@@ -114,21 +123,22 @@ class BaseModel extends Model
     /**
      * 彻底删除
      *
-     * @param $map
+     * @param      $map   彻底删除的数据where
+     * @param bool $flash 是否需要成功或者失败的提示
      *
      * @return bool
      */
-    public function forceDeleteData($map)
+    public function forceDeleteData($map, $flash = true)
     {
         // 彻底删除
         $result=$this
             ->whereMap($map)
             ->forceDelete();
         if ($result) {
-            flash_success('彻底删除成功');
+            flash_success('彻底删除成功', $flash);
             return $result;
         }else{
-            flash_error('彻底删除失败');
+            flash_error('彻底删除失败', $flash);
             return false;
         }
     }
@@ -213,9 +223,11 @@ class BaseModel extends Model
      *   ]
      *
      * @param array $multipleData
+     * @param bool  $flash         是否需要成功或者失败的提示
      * @return bool|int
      */
-    function updateBatch($multipleData = []){
+    function updateBatch($multipleData = [], $flash = true)
+    {
         if (empty($multipleData)) {
             return false;
         }
@@ -241,9 +253,9 @@ class BaseModel extends Model
         // 更新
         $result = DB::update(DB::raw($sql));
         if ($result) {
-            flash_success('操作成功');
+            flash_success('操作成功', $flash);
         } else {
-            flash_error('操作失败');
+            flash_error('操作失败', $flash);
         }
         return $result;
     }
