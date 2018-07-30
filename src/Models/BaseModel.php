@@ -52,10 +52,21 @@ class BaseModel extends Model
      */
     public function updateData($map, $data, $flash = true)
     {
+        if (empty($map)) {
+            flash_error('条件为空', $flash);
+            return false;
+        }
+
+        if (empty($data)) {
+            flash_error('修改的数据为空', $flash);
+            return false;
+        }
+
         $model = $this
             ->whereMap($map)
             ->withTrashed()
             ->get();
+
         // 可能有查不到数据的情况
         if ($model->isEmpty()) {
             flash_error('无需要添加的数据', $flash);
@@ -84,6 +95,11 @@ class BaseModel extends Model
      */
     public function destroyData($map, $flash = true)
     {
+        if (empty($map)) {
+            flash_error('条件为空', $flash);
+            return false;
+        }
+
         // 软删除
         $result=$this
             ->whereMap($map)
@@ -107,6 +123,10 @@ class BaseModel extends Model
      */
     public function restoreData($map, $flash = true)
     {
+        if (empty($map)) {
+            flash_error('条件为空', $flash);
+            return false;
+        }
         // 恢复
         $result=$this
             ->whereMap($map)
@@ -130,6 +150,10 @@ class BaseModel extends Model
      */
     public function forceDeleteData($map, $flash = true)
     {
+        if (empty($map)) {
+            flash_error('条件为空', $flash);
+            return false;
+        }
         // 彻底删除
         $result=$this
             ->whereMap($map)
